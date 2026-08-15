@@ -88,6 +88,14 @@ $config = include __DIR__ . '/../config.php';
         })();
     </script>
 
+    <script>
+        /* Konfigurasi dari src/config.php (anon key boleh publik, RLS melindungi data) */
+        window.SEMUT_CONFIG = {
+            supabaseUrl: <?= json_encode($config['supabase']['url'] ?? '') ?>,
+            supabaseAnonKey: <?= json_encode($config['supabase']['anon_key'] ?? '') ?>
+        };
+    </script>
+
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body class="bg-neutral text-accent font-sans antialiased">

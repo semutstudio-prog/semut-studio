@@ -62,41 +62,58 @@ document.addEventListener('DOMContentLoaded', function () {
         revealEls.forEach(function (el) { el.classList.add('visible'); });
     }
 
-    /* ============ Glow saat klik kontainer ============ */
-    document.querySelectorAll('.project-card, .glow-click').forEach(function (card) {
-        card.addEventListener('mousedown', function () { card.classList.add('is-pressed'); });
-        card.addEventListener('mouseup', function () { card.classList.remove('is-pressed'); });
-        card.addEventListener('mouseleave', function () { card.classList.remove('is-pressed'); });
-    });
+    /* ============ Interaksi kartu (glow, 3D tilt, lightbox) ============ */
+    function bindCardInteractions() {
+        document.querySelectorAll('.project-card, .glow-click').forEach(function (card) {
+            if (card.dataset.pressBound) return;
+            card.dataset.pressBound = '1';
+            card.addEventListener('mousedown', function () { card.classList.add('is-pressed'); });
+            card.addEventListener('mouseup', function () { card.classList.remove('is-pressed'); });
+            card.addEventListener('mouseleave', function () { card.classList.remove('is-pressed'); });
+        });
 
-    /* ============ Glass 3D Tilt Card ============ */
-    document.querySelectorAll('.tilt-card').forEach(function (card) {
-        var subtle = card.classList.contains('tilt-subtle');
-        card.addEventListener('mousemove', function (e) {
-            var rect = card.getBoundingClientRect();
-            var px = (e.clientX - rect.left) / rect.width;
-            var py = (e.clientY - rect.top) / rect.height;
-            var strength = subtle ? 6 : 16;
-            var rotateY = (px - 0.5) * strength;
-            var rotateX = (0.5 - py) * strength;
-            var lift = subtle ? '-3px' : '-8px';
-            var scale = subtle ? '1.01' : '1.03';
-            card.classList.add('is-moving');
-            card.style.transform = 'perspective(750px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(' + lift + ') scale(' + scale + ')';
-            card.style.setProperty('--mx', (px * 100) + '%');
-            card.style.setProperty('--my', (py * 100) + '%');
+        document.querySelectorAll('.tilt-card').forEach(function (card) {
+            if (card.dataset.tiltBound) return;
+            card.dataset.tiltBound = '1';
+            var subtle = card.classList.contains('tilt-subtle');
+            card.addEventListener('mousemove', function (e) {
+                var rect = card.getBoundingClientRect();
+                var px = (e.clientX - rect.left) / rect.width;
+                var py = (e.clientY - rect.top) / rect.height;
+                var strength = subtle ? 6 : 16;
+                var rotateY = (px - 0.5) * strength;
+                var rotateX = (0.5 - py) * strength;
+                var lift = subtle ? '-3px' : '-8px';
+                var scale = subtle ? '1.01' : '1.03';
+                card.classList.add('is-moving');
+                card.style.transform = 'perspective(750px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(' + lift + ') scale(' + scale + ')';
+                card.style.setProperty('--mx', (px * 100) + '%');
+                card.style.setProperty('--my', (py * 100) + '%');
+            });
+            card.addEventListener('mouseleave', function () {
+                card.classList.remove('is-moving');
+                card.style.transform = '';
+                card.style.setProperty('--mx', '50%');
+                card.style.setProperty('--my', '50%');
+            });
         });
-        card.addEventListener('mouseleave', function () {
-            card.classList.remove('is-moving');
-            card.style.transform = '';
-            card.style.setProperty('--mx', '50%');
-            card.style.setProperty('--my', '50%');
+
+        document.querySelectorAll('.project-open').forEach(function (btn) {
+            if (btn.dataset.openBound) return;
+            btn.dataset.openBound = '1';
+            btn.addEventListener('click', function () {
+                openLightbox({
+                    title: btn.getAttribute('data-title'),
+                    desc: btn.getAttribute('data-desc'),
+                    cat: btn.getAttribute('data-cat'),
+                    image: btn.getAttribute('data-image')
+                });
+            });
         });
-    });
+    }
 
     /* ============ Portfolio Filter ============ */
     var filterBtns = document.querySelectorAll('.filter-btn');
-    var projectCards = document.querySelectorAll('.project-card');
 
     filterBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -104,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.classList.add('active');
 
             var filter = btn.getAttribute('data-filter');
-            projectCards.forEach(function (card) {
+            document.querySelectorAll('.project-card').forEach(function (card) {
                 var cat = card.getAttribute('data-category');
                 var show = filter === 'all' || cat === filter;
                 card.classList.toggle('hidden-card', !show);
@@ -152,17 +169,6 @@ document.addEventListener('DOMContentLoaded', function () {
         lightbox.classList.remove('open');
         document.body.style.overflow = '';
     }
-
-    document.querySelectorAll('.project-open').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            openLightbox({
-                title: btn.getAttribute('data-title'),
-                desc: btn.getAttribute('data-desc'),
-                cat: btn.getAttribute('data-cat'),
-                image: btn.getAttribute('data-image')
-            });
-        });
-    });
 
     if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
     if (lightbox) {
@@ -221,18 +227,129 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /* ============ Contact Form (placeholder → Supabase di Fase 4) ============ */
+    /* ============ Supabase: konfigurasi ============ */
+    var supa = window.SEMUT_CONFIG || {};
+    var isSupabaseReady = !!(supa.supabaseUrl && supa.supabaseAnonKey);
+
+    function supabaseRequest(path, options) {
+        options = options || {};
+        options.headers = Object.assign({
+            apikey: supa.supabaseAnonKey,
+            'Content-Type': 'application/json'
+        }, options.headers || {});
+        return fetch(supa.supabaseUrl + path, options);
+    }
+
+    function escapeHtml(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    /* ============ Galeri dari Supabase ============ */
+    var gallery = document.getElementById('gallery');
+
+    function renderProjects(projects) {
+        if (!gallery) return;
+        var html = '';
+        projects.forEach(function (p) {
+            var title = escapeHtml(p.title);
+            var desc = escapeHtml(p.description || '');
+            var cat = escapeHtml(p.category || '');
+            var image = escapeHtml(p.image_url || '');
+            html +=
+                '<article class="project-card tilt-card group rounded-3xl" data-category="' + cat + '">' +
+                '  <div class="tilt-glass pointer-events-none" aria-hidden="true"></div>' +
+                '  <button type="button" class="relative z-10 w-full block text-left project-open"' +
+                '          data-title="' + title + '" data-desc="' + desc + '" data-cat="' + cat + '" data-image="' + image + '">' +
+                '    <div class="aspect-[4/3] overflow-hidden rounded-t-3xl">' +
+                (image
+                    ? '<img src="' + image + '" alt="' + title + '" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy">'
+                    : '<div class="w-full h-full bg-neutral-sand flex items-center justify-center"><span class="font-display font-bold text-5xl text-primary/50">' + cat + '</span></div>') +
+                '    </div>' +
+                '    <div class="tilt-body p-5 flex items-center justify-between gap-3">' +
+                '      <div>' +
+                '        <span class="text-xs font-semibold uppercase tracking-wider text-primary">' + cat + '</span>' +
+                '        <h3 class="mt-0.5 font-display font-semibold text-accent">' + title + '</h3>' +
+                '      </div>' +
+                '      <span class="w-9 h-9 shrink-0 rounded-full border border-neutral-line bg-neutral-panel text-neutral-soft group-hover:bg-primary group-hover:text-neutral group-hover:border-primary flex items-center justify-center transition">' +
+                '        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l-5 5-5-5M17 15l-5 5-5-5"/></svg>' +
+                '      </span>' +
+                '    </div>' +
+                '  </button>' +
+                '</article>';
+        });
+        gallery.innerHTML = html;
+        bindCardInteractions();
+    }
+
+    function loadProjects() {
+        if (!isSupabaseReady || !gallery) return;
+        supabaseRequest('/rest/v1/projects?select=*&order=sort_order.asc')
+            .then(function (res) {
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return res.json();
+            })
+            .then(function (rows) {
+                if (Array.isArray(rows) && rows.length > 0) {
+                    renderProjects(rows);
+                }
+            })
+            .catch(function () {
+                /* Gagal → pakai data contoh dari PHP */
+            });
+    }
+
+    /* ============ Contact Form → Supabase ============ */
     var contactForm = document.getElementById('contactForm');
     var formStatus = document.getElementById('formStatus');
+
+    function showFormStatus(text, isError) {
+        if (!formStatus) return;
+        formStatus.classList.remove('hidden', 'text-primary', 'text-red-400');
+        formStatus.classList.add(isError ? 'text-red-400' : 'text-primary');
+        formStatus.textContent = text;
+    }
 
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            if (formStatus) {
-                formStatus.classList.remove('hidden');
-                formStatus.classList.add('text-primary');
-                formStatus.textContent = 'Terima kasih! Form belum terhubung ke server — integrasi Supabase menyusul (Fase 4).';
+            var btn = contactForm.querySelector('button[type="submit"]');
+            var name = document.getElementById('cfName').value.trim();
+            var email = document.getElementById('cfEmail').value.trim();
+            var subject = document.getElementById('cfSubject').value;
+            var message = document.getElementById('cfMessage').value.trim();
+
+            if (!isSupabaseReady) {
+                showFormStatus('Terima kasih! Form belum terhubung ke Supabase — isi kredensial di src/config.php.');
+                return;
             }
+
+            if (btn) btn.disabled = true;
+            showFormStatus('Mengirim...', false);
+
+            supabaseRequest('/rest/v1/messages', {
+                method: 'POST',
+                body: JSON.stringify({ name: name, email: email, subject: subject, message: message })
+            }).then(function (res) {
+                if (btn) btn.disabled = false;
+                if (res.ok) {
+                    showFormStatus('Terima kasih! Pesan berhasil dikirim — kami balas dalam 1×24 jam.');
+                    contactForm.reset();
+                } else {
+                    showFormStatus('Gagal mengirim. Coba lagi ya.', true);
+                }
+            }).catch(function () {
+                if (btn) btn.disabled = false;
+                showFormStatus('Tidak dapat menghubungi server. Periksa koneksi.', true);
+            });
         });
     }
+
+    /* ============ Init ============ */
+    bindCardInteractions();
+    loadProjects();
 });

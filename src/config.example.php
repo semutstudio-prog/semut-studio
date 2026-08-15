@@ -16,7 +16,8 @@ return [
         'email'     => 'example@semutstudio.com',
     ],
     'supabase' => [
-        'url'  => '',
-        'anon_key' => '',
+        // Ambil dari Supabase Dashboard > Project Settings > API
+        'url'  => 'https://<project-ref>.supabase.co',
+        'anon_key' => 'eyJhbGciOi...', // anon/public key (boleh publik, data dilindungi RLS)
     ],
 ];

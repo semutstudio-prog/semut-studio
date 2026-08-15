@@ -1,0 +1,276 @@
+/* ============ Tema: variabel warna ============ */
+html { color-scheme: dark; }
+html.theme-light { color-scheme: light; }
+
+:root {
+    --c-bg: #121214;      /* bg utama */
+    --c-panel: #1B1B1F;   /* kartu/panel */
+    --c-sand: #222227;    /* bg subtil */
+    --c-line: #2A2A30;    /* border */
+    --c-soft: #9A9AA3;    /* teks sekunder */
+    --c-muted: #A7A7B0;   /* teks footer */
+    --c-cream: #C2C2C9;   /* teks footer terang */
+    --c-deepest: #0B0B0D; /* footer */
+    --c-border: #242428;  /* border footer */
+    --c-primary: #FF6B5E;   /* warna utama brand (coral) */
+    --c-secondary: #FF8A7A; /* pendukung primary (hover) */
+    --c-accent: #F5F5F7;    /* highlight teks terang */
+}
+html.theme-light {
+    --c-bg: #F7F7FA;
+    --c-panel: #FFFFFF;
+    --c-sand: #EFEFF3;
+    --c-line: #E2E2E8;
+    --c-soft: #5F5F6A;
+    --c-muted: #777780;
+    --c-cream: #8A8A94;
+    --c-deepest: #EAEAF0;
+    --c-border: #D8D8E0;
+    --c-primary: #FF6B5E;
+    --c-secondary: #FF8A7A;
+    --c-accent: #18181C;
+}
+
+/* ============ Base ============ */
+html {
+    font-size: 16px;
+}
+body {
+    font-size: 1rem;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    transition: background-color .3s ease, color .3s ease;
+}
+::selection { background: rgba(255, 107, 94, .35); }
+
+/* ============ Scroll Reveal ============ */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============ Filter Button ============ */
+.filter-btn {
+    border: 1px solid var(--c-line);
+    background: var(--c-bg);
+    color: var(--c-soft);
+}
+.filter-btn:hover {
+    border-color: var(--c-primary);
+    color: var(--c-primary);
+}
+.filter-btn.active {
+    background: var(--c-primary);
+    border-color: var(--c-primary);
+    color: #121214;
+}
+
+/* ============ Gallery filter animation ============ */
+.project-card {
+    transition: opacity .35s ease, transform .35s ease;
+}
+.project-card.hidden-card {
+    display: none;
+}
+.project-card.fade-in {
+    animation: cardIn .4s ease both;
+}
+@keyframes cardIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ============ Glow saat klik kontainer ============ */
+.project-card.is-pressed {
+    border-color: rgba(255, 107, 94, .55);
+    box-shadow: 0 0 0 1px rgba(255, 107, 94, .25),
+                0 0 16px rgba(255, 107, 94, .22);
+}
+.project-card.is-pressed .tilt-glass {
+    border-color: rgba(255, 107, 94, .55);
+    box-shadow: 0 0 0 1px rgba(255, 107, 94, .25),
+                0 0 18px rgba(255, 107, 94, .25);
+}
+.glow-click.is-pressed {
+    border-color: rgba(255, 107, 94, .45);
+    box-shadow: 0 0 0 1px rgba(255, 107, 94, .2),
+                0 0 14px rgba(255, 107, 94, .18);
+}
+
+/* ============ Lightbox ============ */
+#lightbox.open,
+#reviewLightbox.open {
+    display: flex;
+}
+
+/* ============ Marquee ============ */
+.marquee {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee:hover .marquee-track {
+    animation-play-state: paused;
+}
+
+/* ============ Glass 3D Card ============ */
+.tilt-card {
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: opacity .6s ease,
+                transform .5s cubic-bezier(.03,.98,.52,.99);
+}
+.tilt-card.is-moving {
+    transition: opacity .6s ease;
+}
+/* Lapisan kaca (frosted panel) */
+.tilt-glass {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    border: 1px solid rgba(255,255,255,.10);
+    background: linear-gradient(150deg, rgba(255,255,255,.09) 0%, rgba(255,255,255,.03) 50%, rgba(255,107,94,.07) 100%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    backdrop-filter: blur(18px) saturate(150%);
+    box-shadow: 0 18px 40px -18px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.07);
+    transition: border-color .3s ease, box-shadow .3s ease;
+}
+.tilt-card:hover .tilt-glass {
+    border-color: rgba(255,255,255,.2);
+    box-shadow: 0 30px 60px -22px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.12);
+}
+/* Sorotan (glare) yang mengikuti kursor */
+.tilt-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.18), transparent 45%);
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+.tilt-card:hover .tilt-glass::before { opacity: 1; }
+/* Garis highlight di tepi atas kaca */
+.tilt-glass::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 12%; right: 12%;
+    z-index: 1;
+    pointer-events: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,.32), transparent);
+}
+/* Kedalaman 3D untuk konten (parallax terhadap kaca) */
+.tilt-card > .project-open,
+.tilt-card > .review-open { transform: translateZ(26px); }
+.tilt-card .tilt-body { transform: translateZ(40px); }
+
+/* ============ Tema terang: penyesuaian glass ============ */
+html.theme-light .tilt-glass {
+    border-color: rgba(0,0,0,.10);
+    background: linear-gradient(150deg, rgba(255,255,255,.80) 0%, rgba(255,255,255,.60) 50%, rgba(255,107,94,.12) 100%);
+    box-shadow: 0 18px 40px -18px rgba(20,20,30,.20), inset 0 1px 0 rgba(255,255,255,.9);
+}
+html.theme-light .tilt-card:hover .tilt-glass {
+    border-color: rgba(0,0,0,.16);
+    box-shadow: 0 28px 55px -22px rgba(20,20,30,.28), inset 0 1px 0 rgba(255,255,255,.95);
+}
+html.theme-light .tilt-glass::before {
+    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(255,107,94,.10), transparent 45%);
+}
+html.theme-light .tilt-glass::after {
+    background: linear-gradient(to right, transparent, rgba(255,255,255,.9), transparent);
+}
+html.theme-light .tilt-card.tilt-subtle .tilt-glass {
+    border-color: rgba(0,0,0,.08);
+    background: linear-gradient(150deg, rgba(255,255,255,.85) 0%, rgba(255,255,255,.70) 50%, rgba(255,107,94,.08) 100%);
+    box-shadow: 0 12px 28px -16px rgba(20,20,30,.16), inset 0 1px 0 rgba(255,255,255,.9);
+}
+html.theme-light .tilt-card.tilt-subtle:hover .tilt-glass {
+    border-color: rgba(0,0,0,.14);
+    box-shadow: 0 18px 38px -18px rgba(20,20,30,.22), inset 0 1px 0 rgba(255,255,255,.95);
+}
+html.theme-light .tilt-card.tilt-subtle .tilt-glass::before {
+    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(255,107,94,.08), transparent 45%);
+}
+
+/* ============ Theme Toggle (3D slide) ============ */.theme-toggle {
+    position: relative;
+    width: 58px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    perspective: 300px;
+    flex-shrink: 0;
+}
+.theme-toggle-track {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: var(--c-sand);
+    border: 1px solid var(--c-line);
+    box-shadow: inset 0 2px 5px rgba(0,0,0,.18);
+}
+.theme-toggle-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background: var(--c-panel);
+    border: 1px solid var(--c-line);
+    box-shadow: 0 3px 8px rgba(0,0,0,.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.34,1.3,.5,1);
+}
+.theme-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    color: var(--c-primary);
+}
+.theme-face svg { width: 14px; height: 14px; }
+.theme-face-moon { transform: rotateY(0deg); }
+.theme-face-sun  { transform: rotateY(180deg); }
+/* Dark aktif (default): knob di kanan menampilkan bulan */
+.theme-toggle[aria-pressed="true"] .theme-toggle-knob {
+    transform: translateX(30px) rotateY(0deg);
+}
+/* Terang aktif: knob di kiri menampilkan matahari */
+.theme-toggle[aria-pressed="false"] .theme-toggle-knob {
+    transform: translateX(0) rotateY(180deg);
+}
+
+/* ============ Variasi halus (review card) ============ */
+.tilt-card.tilt-subtle .tilt-glass {
+    border-color: rgba(255,255,255,.07);
+    background: linear-gradient(150deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.02) 50%, rgba(255,107,94,.04) 100%);
+    box-shadow: 0 12px 28px -16px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.tilt-card.tilt-subtle:hover .tilt-glass {
+    border-color: rgba(255,255,255,.12);
+    box-shadow: 0 18px 38px -18px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.tilt-card.tilt-subtle .tilt-glass::before {
+    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.08), transparent 45%);
+}
+.tilt-card.tilt-subtle .tilt-glass::after { opacity: .5; }
+.tilt-card.tilt-subtle > .review-open { transform: translateZ(14px); }
+.tilt-card.tilt-subtle .tilt-body { transform: translateZ(20px); }

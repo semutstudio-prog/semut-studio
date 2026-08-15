@@ -1,0 +1,19 @@
+# Kredensial / konfigurasi lokal
+src/config.php
+.env
+.env.local
+
+# Dependensi
+node_modules/
+vendor/
+
+# Sistem / editor
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+
+# Build / temp
+public/assets/css/build/
+public/assets/js/build/

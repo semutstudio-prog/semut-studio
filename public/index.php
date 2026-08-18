@@ -6,27 +6,27 @@ $services = [
     [
         'icon'  => 'M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9',
         'title' => '3D Modeling',
-        'desc'  => 'Pembuatan model 3D karakter dan produk dengan detail tinggi untuk berbagai kebutuhan.',
+        'desc'  => 'Membuat model 3D karakter atau objek sesuai kebutuhan proyek.',
     ],
     [
         'icon'  => 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01',
         'title' => 'Texturing',
-        'desc'  => 'Pemberian material dan tekstur pada model 3D agar terlihat realistis dan sesuai referensi.',
+        'desc'  => 'Memberi warna dan tekstur pada model 3D agar sesuai referensi.',
     ],
     [
         'icon'  => 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1',
         'title' => 'Rigging',
-        'desc'  => 'Pembuatan skeleton dan controller agar model 3D bisa digerakkan dan dianimasikan.',
+        'desc'  => 'Membuat skeleton dan controller agar model 3D bisa digerakkan.',
     ],
     [
         'icon'  => 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
         'title' => 'VRChat Setup (Unity)',
-        'desc'  => 'Setup avatar untuk VRChat di Unity termasuk optimasi polygon, material, dan konfigurasi VRChat SDK.',
+        'desc'  => 'Setup avatar agar siap pakai di VRChat melalui Unity dan VRChat SDK.',
     ],
     [
         'icon'  => 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664zM21 12a9 9 0 11-18 0 9 9 0 0118 0z',
         'title' => 'GoGoLoco Setup',
-        'desc'  => 'Setup sistem GoGoLoco untuk animasi locomotion realistis pada avatar VRChat.',
+        'desc'  => 'Setup GoGoLoco untuk animasi locomotion pada avatar.',
     ],
 ];
 

@@ -30,9 +30,10 @@ $config = include __DIR__ . '/../config.php';
             <h3 class="font-display font-semibold text-accent mb-4">Sosial Media</h3>
             <ul class="space-y-2 text-sm text-neutral-muted">
                 <li><a href="<?= htmlspecialchars($config['social']['instagram']) ?>" class="hover:text-primary transition" target="_blank" rel="noopener">Instagram</a></li>
-                <li><a href="<?= htmlspecialchars($config['social']['behance']) ?>" class="hover:text-primary transition" target="_blank" rel="noopener">Behance</a></li>
-                <li><a href="<?= htmlspecialchars($config['social']['dribbble']) ?>" class="hover:text-primary transition" target="_blank" rel="noopener">Dribbble</a></li>
-                <li><a href="<?= htmlspecialchars($config['social']['tiktok']) ?>" class="hover:text-primary transition" target="_blank" rel="noopener">TikTok</a></li>
+                <li><a href="<?= htmlspecialchars($config['social']['facebook']) ?>" class="hover:text-primary transition" target="_blank" rel="noopener">Facebook</a></li>
+                <li><a href="<?= htmlspecialchars($config['social']['fiverr']) ?>" class="hover:text-primary transition" target="_blank" rel="noopener">Fiverr</a></li>
+                <li><a href="<?= htmlspecialchars($config['social']['discord']) ?>" class="hover:text-primary transition" target="_blank" rel="noopener">Discord</a></li>
+                <li><a href="mailto:<?= htmlspecialchars($config['social']['email']) ?>" class="hover:text-primary transition"><?= htmlspecialchars($config['social']['email']) ?></a></li>
             </ul>
         </div>
     </div>

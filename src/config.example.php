@@ -9,11 +9,11 @@ return [
         'year'    => date('Y'),
     ],
     'social' => [
-        'instagram' => '@semutstudio',
-        'behance'   => '@semutstudio',
-        'dribbble'  => '@semutstudio',
-        'tiktok'    => '@semutstudio',
-        'email'     => 'example@semutstudio.com',
+        'instagram' => 'https://www.instagram.com/semutstudio25',
+        'facebook'  => 'https://www.facebook.com/MukhlisSemut',
+        'fiverr'    => 'https://www.fiverr.com/s/Q2Y2Kv1',
+        'discord'   => 'https://discord.com/users/semutstudio',
+        'email'     => 'semutstudio25@gmail.com',
     ],
     'supabase' => [
         // Ambil dari Supabase Dashboard > Project Settings > API

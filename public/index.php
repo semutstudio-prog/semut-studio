@@ -113,7 +113,7 @@ $testimonials = [
                     </span>
                 </h1>
                 <p class="mt-7 text-neutral-soft leading-relaxed max-w-lg reveal">
-                    Kami membantu menyediakan aset karakter 2D, 3D, dan video promosi yang siap digunakan untuk kebutuhan animasi maupun kampanye marketing.
+                    Kami membantu menyediakan aset karakter 2D, 3D, dan video promosi yang siap digunakan untuk kebutuhan animasi maupun marketing.
                 </p>
                 <div class="mt-9 flex flex-wrap gap-4 reveal">
                     <a href="#portfolio" class="rounded-full bg-primary hover:bg-secondary text-neutral font-semibold px-7 py-3 transition">
@@ -268,7 +268,7 @@ $testimonials = [
                     <p class="font-display font-semibold text-accent">SEMUT Studio</p>
                 </div>
                 <div class="absolute -bottom-6 left-8 rounded-2xl border border-neutral-line bg-neutral-panel px-5 py-3 shadow-md">
-                    <p class="font-display font-bold text-accent text-lg leading-none">Est. 2022</p>
+                    <p class="font-display font-bold text-accent text-lg leading-none">Est. 2025</p>
                     <p class="text-xs text-neutral-soft mt-0.5">Berkarya sejak</p>
                 </div>
             </div>
@@ -427,16 +427,16 @@ $testimonials = [
                         </span>
                         <span>
                             <span class="block text-xs text-neutral-soft">Instagram</span>
-                            @semutstudio
+                            @semutstudio25
                         </span>
                     </a>
-                                        <a href="<?= htmlspecialchars($config['social']['instagram']) ?>" class="flex items-center gap-4 text-sm text-accent hover:text-primary transition group" target="_blank" rel="noopener">
+                    <a href="<?= htmlspecialchars($config['social']['fiverr']) ?>" class="flex items-center gap-4 text-sm text-accent hover:text-primary transition group" target="_blank" rel="noopener">
                         <span class="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-neutral transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a6 6 0 016-6h6a6 6 0 016 6v6a6 6 0 01-6 6H9a6 6 0 01-6-6V9z"/><circle cx="12" cy="12" r="3"/><circle cx="17" cy="7" r="1"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016A3.001 3.001 0 0021 9.35m-18 0V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v4.1"/></svg>
                         </span>
                         <span>
-                            <span class="block text-xs text-neutral-soft">fiverr</span>
-                            Example
+                            <span class="block text-xs text-neutral-soft">Fiverr</span>
+                            fiverr.com/semutstudio
                         </span>
                     </a>
                 </div>

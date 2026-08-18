@@ -465,9 +465,11 @@ $testimonials = [
                 <div>
                     <label for="cfSubject" class="block text-sm font-medium text-accent mb-2">Jenis Proyek</label>
                     <select id="cfSubject" name="subject" class="w-full rounded-xl bg-neutral border border-neutral-line px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
-                        <option value="Desain 2D">Desain 2D</option>
-                        <option value="Desain 3D">Desain 3D</option>
-                        <option value="Branding">Branding Video</option>
+                        <option value="3D Modeling">3D Modeling</option>
+                        <option value="Texturing">Texturing</option>
+                        <option value="Rigging">Rigging</option>
+                        <option value="VRChat Setup">VRChat Setup (Unity)</option>
+                        <option value="GoGoLoco Setup">GoGoLoco Setup</option>
                         <option value="Lainnya">Lainnya</option>
                     </select>
                 </div>

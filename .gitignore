@@ -17,3 +17,9 @@ Thumbs.db
 # Build / temp
 public/assets/css/build/
 public/assets/js/build/
+
+# Backup zip
+*.zip
+
+# Sisyphus
+.sisyphus/

@@ -10,7 +10,7 @@ return [
     ],
     'social' => [
         'instagram' => 'https://www.instagram.com/semutstudio25',
-        'facebook'  => 'https://www.facebook.com/MukhlisSemut',
+        'facebook'  => 'https://www.facebook.com/share/1F8VBVJ3Kf/',
         'fiverr'    => 'https://www.fiverr.com/s/Q2Y2Kv1',
         'discord'   => 'https://discord.com/users/semutstudio',
         'email'     => 'semutstudio25@gmail.com',

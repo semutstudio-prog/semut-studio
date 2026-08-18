@@ -134,16 +134,20 @@ body {
     inset: 0;
     z-index: 0;
     border-radius: inherit;
-    border: 1px solid rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.15);
     background: linear-gradient(150deg, rgba(255,255,255,.09) 0%, rgba(255,255,255,.03) 50%, rgba(255,107,94,.07) 100%);
     -webkit-backdrop-filter: blur(18px) saturate(150%);
     backdrop-filter: blur(18px) saturate(150%);
-    box-shadow: 0 18px 40px -18px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.07);
+    box-shadow: 0 22px 50px -16px rgba(0,0,0,.65),
+                inset 0 1px 0 rgba(255,255,255,.08),
+                inset 0 -2px 12px rgba(255,107,94,.04);
     transition: border-color .3s ease, box-shadow .3s ease;
 }
 .tilt-card:hover .tilt-glass {
-    border-color: rgba(255,255,255,.2);
-    box-shadow: 0 30px 60px -22px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.12);
+    border-color: rgba(255,255,255,.3);
+    box-shadow: 0 35px 70px -20px rgba(0,0,0,.75),
+                inset 0 1px 0 rgba(255,255,255,.15),
+                inset 0 2px 16px rgba(255,255,255,.06);
 }
 /* Sorotan (glare) yang mengikuti kursor */
 .tilt-glass::before {
@@ -153,7 +157,7 @@ body {
     z-index: 1;
     pointer-events: none;
     border-radius: inherit;
-    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.18), transparent 45%);
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.25), transparent 45%);
     opacity: 0;
     transition: opacity .3s ease;
 }
@@ -166,7 +170,7 @@ body {
     z-index: 1;
     pointer-events: none;
     height: 1px;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,.32), transparent);
+    background: linear-gradient(to right, transparent, rgba(255,255,255,.5), transparent);
 }
 /* Kedalaman 3D untuk konten (parallax terhadap kaca) */
 .tilt-card > .project-open,
@@ -175,16 +179,20 @@ body {
 
 /* ============ Tema terang: penyesuaian glass ============ */
 html.theme-light .tilt-glass {
-    border-color: rgba(0,0,0,.10);
+    border-color: rgba(0,0,0,.12);
     background: linear-gradient(150deg, rgba(255,255,255,.80) 0%, rgba(255,255,255,.60) 50%, rgba(255,107,94,.12) 100%);
-    box-shadow: 0 18px 40px -18px rgba(20,20,30,.20), inset 0 1px 0 rgba(255,255,255,.9);
+    box-shadow: 0 22px 50px -16px rgba(20,20,30,.22),
+                inset 0 1px 0 rgba(255,255,255,.9),
+                inset 0 -2px 12px rgba(255,107,94,.05);
 }
 html.theme-light .tilt-card:hover .tilt-glass {
-    border-color: rgba(0,0,0,.16);
-    box-shadow: 0 28px 55px -22px rgba(20,20,30,.28), inset 0 1px 0 rgba(255,255,255,.95);
+    border-color: rgba(0,0,0,.2);
+    box-shadow: 0 35px 70px -20px rgba(20,20,30,.3),
+                inset 0 1px 0 rgba(255,255,255,.95),
+                inset 0 2px 16px rgba(255,255,255,.7);
 }
 html.theme-light .tilt-glass::before {
-    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(255,107,94,.10), transparent 45%);
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(255,107,94,.12), transparent 45%);
 }
 html.theme-light .tilt-glass::after {
     background: linear-gradient(to right, transparent, rgba(255,255,255,.9), transparent);
@@ -192,14 +200,18 @@ html.theme-light .tilt-glass::after {
 html.theme-light .tilt-card.tilt-subtle .tilt-glass {
     border-color: rgba(0,0,0,.08);
     background: linear-gradient(150deg, rgba(255,255,255,.85) 0%, rgba(255,255,255,.70) 50%, rgba(255,107,94,.08) 100%);
-    box-shadow: 0 12px 28px -16px rgba(20,20,30,.16), inset 0 1px 0 rgba(255,255,255,.9);
+    box-shadow: 0 16px 35px -14px rgba(20,20,30,.18),
+                inset 0 1px 0 rgba(255,255,255,.9),
+                inset 0 -1px 8px rgba(255,107,94,.04);
 }
 html.theme-light .tilt-card.tilt-subtle:hover .tilt-glass {
-    border-color: rgba(0,0,0,.14);
-    box-shadow: 0 18px 38px -18px rgba(20,20,30,.22), inset 0 1px 0 rgba(255,255,255,.95);
+    border-color: rgba(0,0,0,.15);
+    box-shadow: 0 22px 45px -16px rgba(20,20,30,.24),
+                inset 0 1px 0 rgba(255,255,255,.95),
+                inset 0 1px 10px rgba(255,255,255,.6);
 }
 html.theme-light .tilt-card.tilt-subtle .tilt-glass::before {
-    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(255,107,94,.08), transparent 45%);
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(255,107,94,.08), transparent 45%);
 }
 
 /* ============ Theme Toggle (3D slide) ============ */.theme-toggle {
@@ -260,17 +272,78 @@ html.theme-light .tilt-card.tilt-subtle .tilt-glass::before {
 
 /* ============ Variasi halus (review card) ============ */
 .tilt-card.tilt-subtle .tilt-glass {
-    border-color: rgba(255,255,255,.07);
+    border-color: rgba(255,255,255,.10);
     background: linear-gradient(150deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.02) 50%, rgba(255,107,94,.04) 100%);
-    box-shadow: 0 12px 28px -16px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+    box-shadow: 0 16px 35px -14px rgba(0,0,0,.5),
+                inset 0 1px 0 rgba(255,255,255,.05),
+                inset 0 -1px 8px rgba(255,107,94,.03);
 }
 .tilt-card.tilt-subtle:hover .tilt-glass {
-    border-color: rgba(255,255,255,.12);
-    box-shadow: 0 18px 38px -18px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.16);
+    box-shadow: 0 22px 45px -16px rgba(0,0,0,.55),
+                inset 0 1px 0 rgba(255,255,255,.08),
+                inset 0 1px 10px rgba(255,255,255,.04);
 }
 .tilt-card.tilt-subtle .tilt-glass::before {
-    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.08), transparent 45%);
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.10), transparent 45%);
 }
 .tilt-card.tilt-subtle .tilt-glass::after { opacity: .5; }
 .tilt-card.tilt-subtle > .review-open { transform: translateZ(14px); }
 .tilt-card.tilt-subtle .tilt-body { transform: translateZ(20px); }
+
+/* ============ Anchor scroll offset (header fixed) ============ */
+section[id] { scroll-margin-top: 5rem; }
+
+/* ============ Nav link marker (active section) ============ */
+.nav-link {
+    position: relative;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -6px;
+    height: 2px;
+    border-radius: 9999px;
+    background: var(--c-primary);
+    transition: right .3s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+    right: 0;
+}
+.nav-link.active {
+    color: var(--c-primary);
+}
+
+/* ============ Back to top button ============ */
+.back-to-top {
+    position: fixed;
+    right: 18px;
+    bottom: 20px;
+    z-index: 40;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 9999px;
+    background: var(--c-primary);
+    color: #121214;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(255, 107, 94, .35);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity .3s ease, transform .3s ease, visibility .3s ease, background-color .3s ease;
+}
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.back-to-top:hover {
+    background: var(--c-secondary);
+}

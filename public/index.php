@@ -217,7 +217,7 @@ $testimonials = [
                 </div>
 
                 <div class="flex flex-wrap gap-2 reveal" id="filterBar">
-                    <button class="filter-btn rounded-full px-5 py-2 text-sm font-semibold transition" data-filter="all">Semua</button>
+                    <button class="filter-btn active rounded-full px-5 py-2 text-sm font-semibold transition" data-filter="all">Semua</button>
                     <button class="filter-btn rounded-full px-5 py-2 text-sm font-semibold transition" data-filter="2D">2D</button>
                     <button class="filter-btn rounded-full px-5 py-2 text-sm font-semibold transition" data-filter="3D">3D</button>
                 </div>
@@ -319,7 +319,7 @@ $testimonials = [
                 <span class="w-8 h-px bg-primary"></span> Testimoni
             </p>
             <h2 class="mt-3 font-display text-3xl sm:text-4xl font-bold text-accent reveal">Review Pelanggan</h2>
-            <div class="mt-12 grid gap-6 md:grid-cols-3">
+            <div id="testimonialsGrid" class="mt-12 grid gap-6 md:grid-cols-3">
                 <?php foreach ($testimonials as $t): ?>
                 <figure class="tilt-card tilt-subtle reveal group rounded-3xl">
                     <div class="tilt-glass pointer-events-none" aria-hidden="true"></div>
@@ -330,7 +330,7 @@ $testimonials = [
                             data-role="<?= htmlspecialchars($t['role']) ?>">
                         <div class="tilt-body">
                             <div class="text-primary mb-4 text-lg tracking-widest" aria-hidden="true">★★★★★</div>
-                            <p class="text-base text-accent/80 leading-relaxed line-clamp-4">“<?= htmlspecialchars($t['quote']) ?>”</p>
+                            <p class="text-base text-accent/80 leading-relaxed line-clamp-4">"<?= htmlspecialchars($t['quote']) ?>"</p>
                             <div class="mt-6 border-t border-neutral-line pt-4">
                                 <p class="font-semibold text-accent text-base"><?= htmlspecialchars($t['name']) ?></p>
                                 <p class="text-xs text-neutral-soft mt-0.5"><?= htmlspecialchars($t['role']) ?></p>
@@ -343,6 +343,58 @@ $testimonials = [
                     </button>
                 </figure>
                 <?php endforeach; ?>
+            </div>
+
+            <div class="mt-14 text-center reveal">
+                <button id="reviewFormToggle" type="button" aria-expanded="false"
+                        class="inline-flex items-center gap-2 rounded-full border border-neutral-line hover:border-primary hover:text-primary text-accent font-semibold px-7 py-3 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    Tulis Review
+                </button>
+            </div>
+
+            <div id="reviewFormWrap" class="hidden mt-10 max-w-2xl mx-auto">
+                <div class="rounded-3xl border border-neutral-line bg-neutral-panel p-8">
+                    <h3 class="font-display font-semibold text-accent text-xl">Bagikan Pengalamanmu</h3>
+                    <p class="mt-2 text-sm text-neutral-soft">Sudah pernah bekerja sama? Ceritakan pengalamanmu — review akan tampil setelah disetujui admin.</p>
+                    <form id="reviewForm" class="mt-6 space-y-5">
+                        <div class="grid gap-5 sm:grid-cols-2">
+                            <div>
+                                <label for="rfName" class="block text-sm font-medium text-accent mb-2">Nama</label>
+                                <input type="text" id="rfName" name="name" required
+                                       class="w-full rounded-xl bg-neutral border border-neutral-line px-4 py-3 text-sm placeholder-neutral-soft/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                       placeholder="Nama kamu">
+                            </div>
+                            <div>
+                                <label for="rfRole" class="block text-sm font-medium text-accent mb-2">Jabatan / Brand</label>
+                                <input type="text" id="rfRole" name="role"
+                                       class="w-full rounded-xl bg-neutral border border-neutral-line px-4 py-3 text-sm placeholder-neutral-soft/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                       placeholder="cth: Owner, Online Store">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="rfRating" class="block text-sm font-medium text-accent mb-2">Rating</label>
+                            <select id="rfRating" name="rating" class="w-full rounded-xl bg-neutral border border-neutral-line px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+                                <option value="5">5 — Luar biasa</option>
+                                <option value="4">4 — Bagus</option>
+                                <option value="3">3 — Cukup</option>
+                                <option value="2">2 — Kurang</option>
+                                <option value="1">1 — Buruk</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="rfReview" class="block text-sm font-medium text-accent mb-2">Review</label>
+                            <textarea id="rfReview" name="review" rows="4" required
+                                      class="w-full rounded-xl bg-neutral border border-neutral-line px-4 py-3 text-sm placeholder-neutral-soft/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none"
+                                      placeholder="Ceritakan pengalamanmu bekerja dengan kami..."></textarea>
+                        </div>
+                        <button type="submit"
+                                class="w-full rounded-xl bg-primary hover:bg-secondary text-neutral font-semibold px-6 py-3.5 transition">
+                            Kirim Review
+                        </button>
+                        <p id="reviewStatus" class="text-sm text-center hidden"></p>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -465,6 +517,11 @@ $testimonials = [
         </div>
     </div>
 </div>
+
+<!-- ===================== BACK TO TOP ===================== -->
+<button id="backToTop" class="back-to-top" aria-label="Kembali ke atas">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+</button>
 
 <?php include __DIR__ . '/../src/partials/footer.php'; ?>
 

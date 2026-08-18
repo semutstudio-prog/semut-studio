@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /* ============ Scroll Reveal (IntersectionObserver) ============ */
-    var revealEls = document.querySelectorAll('.reveal');
-    if ('IntersectionObserver' in window && revealEls.length) {
-        var revealObserver = new IntersectionObserver(function (entries) {
+    var revealObserver = null;
+    if ('IntersectionObserver' in window) {
+        revealObserver = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
@@ -57,10 +57,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }, { threshold: 0.12 });
-        revealEls.forEach(function (el) { revealObserver.observe(el); });
-    } else {
-        revealEls.forEach(function (el) { el.classList.add('visible'); });
     }
+
+    function observeReveals() {
+        var els = document.querySelectorAll('.reveal:not(.visible)');
+        if (revealObserver) {
+            els.forEach(function (el) { revealObserver.observe(el); });
+        } else {
+            els.forEach(function (el) { el.classList.add('visible'); });
+        }
+    }
+    observeReveals();
 
     /* ============ Interaksi kartu (glow, 3D tilt, lightbox) ============ */
     function bindCardInteractions() {
@@ -80,13 +87,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 var rect = card.getBoundingClientRect();
                 var px = (e.clientX - rect.left) / rect.width;
                 var py = (e.clientY - rect.top) / rect.height;
-                var strength = subtle ? 6 : 16;
+                var strength = subtle ? 8 : 12;
                 var rotateY = (px - 0.5) * strength;
                 var rotateX = (0.5 - py) * strength;
-                var lift = subtle ? '-3px' : '-8px';
-                var scale = subtle ? '1.01' : '1.03';
+                var lift = subtle ? '-5px' : '-6px';
+                var scale = subtle ? '1.02' : '1.02';
                 card.classList.add('is-moving');
-                card.style.transform = 'perspective(750px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(' + lift + ') scale(' + scale + ')';
+                card.style.transform = 'perspective(700px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(' + lift + ') scale(' + scale + ')';
                 card.style.setProperty('--mx', (px * 100) + '%');
                 card.style.setProperty('--my', (py * 100) + '%');
             });
@@ -107,6 +114,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     desc: btn.getAttribute('data-desc'),
                     cat: btn.getAttribute('data-cat'),
                     image: btn.getAttribute('data-image')
+                });
+            });
+        });
+
+        document.querySelectorAll('.review-open').forEach(function (btn) {
+            if (btn.dataset.reviewBound) return;
+            btn.dataset.reviewBound = '1';
+            btn.addEventListener('click', function () {
+                openReviewLightbox({
+                    quote: btn.getAttribute('data-quote'),
+                    full: btn.getAttribute('data-full'),
+                    name: btn.getAttribute('data-name'),
+                    role: btn.getAttribute('data-role')
                 });
             });
         });
@@ -206,17 +226,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.style.overflow = '';
     }
 
-    document.querySelectorAll('.review-open').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            openReviewLightbox({
-                quote: btn.getAttribute('data-quote'),
-                full: btn.getAttribute('data-full'),
-                name: btn.getAttribute('data-name'),
-                role: btn.getAttribute('data-role')
-            });
-        });
-    });
-
     if (reviewLightboxClose) reviewLightboxClose.addEventListener('click', closeReviewLightbox);
     if (reviewLightbox) {
         reviewLightbox.addEventListener('click', function (e) {
@@ -237,7 +246,8 @@ document.addEventListener('DOMContentLoaded', function () {
             apikey: supa.supabaseAnonKey,
             'Content-Type': 'application/json'
         }, options.headers || {});
-        return fetch(supa.supabaseUrl + path, options);
+        var fullUrl = supa.supabaseUrl + path;
+        return fetch(fullUrl, options);
     }
 
     function escapeHtml(value) {
@@ -290,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!isSupabaseReady || !gallery) return;
         supabaseRequest('/rest/v1/projects?select=*&order=sort_order.asc')
             .then(function (res) {
-                if (!res.ok) throw new Error('HTTP ' + res.status);
+                if (!res.ok) return res.text().then(function (t) { throw new Error('HTTP ' + res.status + ': ' + t); });
                 return res.json();
             })
             .then(function (rows) {
@@ -349,7 +359,180 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    /* ============ Toggle Review Form ============ */
+    var reviewFormWrap = document.getElementById('reviewFormWrap');
+    var reviewFormToggle = document.getElementById('reviewFormToggle');
+
+    if (reviewFormToggle && reviewFormWrap) {
+        reviewFormToggle.addEventListener('click', function () {
+            var isHidden = reviewFormWrap.classList.toggle('hidden');
+            reviewFormToggle.setAttribute('aria-expanded', String(!isHidden));
+            reviewFormToggle.innerHTML = isHidden
+                ? '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg> Tulis Review'
+                : '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg> Tutup';
+            if (!isHidden) {
+                reviewFormWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    }
+
+    /* ============ Review Form → Supabase (pending) ============ */
+    var reviewForm = document.getElementById('reviewForm');
+    var reviewStatus = document.getElementById('reviewStatus');
+
+    function showReviewStatus(text, isError) {
+        if (!reviewStatus) return;
+        reviewStatus.classList.remove('hidden', 'text-primary', 'text-red-400');
+        reviewStatus.classList.add(isError ? 'text-red-400' : 'text-primary');
+        reviewStatus.textContent = text;
+    }
+
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var btn = reviewForm.querySelector('button[type="submit"]');
+            var name = document.getElementById('rfName').value.trim();
+            var role = document.getElementById('rfRole').value.trim();
+            var rating = parseInt(document.getElementById('rfRating').value, 10) || 5;
+            var quote = document.getElementById('rfReview').value.trim();
+
+            if (!name || !quote) {
+                showReviewStatus('Nama dan review wajib diisi ya.', true);
+                return;
+            }
+            if (!isSupabaseReady) {
+                showReviewStatus('Form belum terhubung ke Supabase — isi kredensial di src/config.php.', true);
+                return;
+            }
+
+            if (btn) btn.disabled = true;
+            showReviewStatus('Mengirim...', false);
+
+            supabaseRequest('/rest/v1/testimonials', {
+                method: 'POST',
+                body: JSON.stringify({ name: name, role: role, rating: rating, quote: quote, status: 'pending' })
+            }).then(function (res) {
+                if (btn) btn.disabled = false;
+                if (res.ok) {
+                    showReviewStatus('Terima kasih! Review kamu menunggu persetujuan admin.', false);
+                    reviewForm.reset();
+                } else {
+                    return res.text().then(function (body) {
+                        console.error('Supabase testimonial error', res.status, body);
+                        showReviewStatus('Gagal mengirim (HTTP ' + res.status + '). Cek console browser.', true);
+                    });
+                }
+            }).catch(function () {
+                if (btn) btn.disabled = false;
+                showReviewStatus('Tidak dapat menghubungi server. Periksa koneksi.', true);
+            });
+        });
+    }
+
+    /* ============ Testimoni dari Supabase ============ */
+    var testimonialsGrid = document.getElementById('testimonialsGrid');
+
+    function renderTestimonials(rows) {
+        if (!testimonialsGrid || !Array.isArray(rows) || !rows.length) return;
+        var html = '';
+        rows.forEach(function (t) {
+            var quote = escapeHtml(t.quote || '');
+            var full = escapeHtml(t.review || t.quote || '');
+            var name = escapeHtml(t.name || '');
+            var role = escapeHtml(t.role || '');
+            var rating = Math.max(1, Math.min(5, parseInt(t.rating, 10) || 5));
+            var stars = new Array(rating + 1).join('\u2605');
+            html +=
+                '<figure class="tilt-card tilt-subtle reveal group rounded-3xl">' +
+                '  <div class="tilt-glass pointer-events-none" aria-hidden="true"></div>' +
+                '  <button type="button" class="review-open relative z-10 w-full block text-left p-7"' +
+                '          data-quote="' + quote + '" data-full="' + full + '" data-name="' + name + '" data-role="' + role + '">' +
+                '    <div class="tilt-body">' +
+                '      <div class="text-primary mb-4 text-lg tracking-widest" aria-hidden="true">' + stars + '</div>' +
+                '      <p class="text-base text-accent/80 leading-relaxed line-clamp-4">\u201C' + quote + '\u201D</p>' +
+                '      <div class="mt-6 border-t border-neutral-line pt-4">' +
+                '        <p class="font-semibold text-accent text-base">' + name + '</p>' +
+                '        <p class="text-xs text-neutral-soft mt-0.5">' + role + '</p>' +
+                '      </div>' +
+                '      <span class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:gap-3 transition-all">Baca review lengkap' +
+                '        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/></svg>' +
+                '      </span>' +
+                '    </div>' +
+                '  </button>' +
+                '</figure>';
+        });
+        testimonialsGrid.innerHTML = html;
+        bindCardInteractions();
+        observeReveals();
+    }
+
+    function loadTestimonials() {
+        if (!isSupabaseReady || !testimonialsGrid) return;
+        supabaseRequest('/rest/v1/testimonials?select=*&status=eq.approved&order=created_at.asc')
+            .then(function (res) {
+                if (!res.ok) return res.text().then(function (t) { throw new Error('HTTP ' + res.status + ': ' + t); });
+                return res.json();
+            })
+            .then(function (rows) {
+                if (Array.isArray(rows) && rows.length > 0) {
+                    renderTestimonials(rows);
+                }
+            })
+            .catch(function (err) {
+                console.warn('[Testimonials] Gagal load dari Supabase:', err.message);
+            });
+    }
+
+    /* ============ Back to top ============ */
+    var backToTop = document.getElementById('backToTop');
+    if (backToTop) {
+        function updateBackToTop() {
+            backToTop.classList.toggle('visible', window.scrollY > 500);
+        }
+        window.addEventListener('scroll', updateBackToTop, { passive: true });
+        updateBackToTop();
+        backToTop.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    /* ============ Active nav link (scroll spy) ============ */
+    var spySections = document.querySelectorAll('main section[id]');
+    var navLinks = document.querySelectorAll('.nav-link');
+
+    function setActiveNav(id) {
+        navLinks.forEach(function (link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+    }
+
+    if ('IntersectionObserver' in window && spySections.length) {
+        var spyObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) setActiveNav(entry.target.id);
+            });
+        }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+        spySections.forEach(function (s) { spyObserver.observe(s); });
+        setActiveNav('home');
+    } else {
+        var spyTimer = null;
+        window.addEventListener('scroll', function () {
+            if (spyTimer) return;
+            spyTimer = setTimeout(function () {
+                spyTimer = null;
+                var pos = window.scrollY + 120;
+                var current = 'home';
+                spySections.forEach(function (s) {
+                    if (s.offsetTop <= pos) current = s.id;
+                });
+                setActiveNav(current);
+            }, 80);
+        }, { passive: true });
+        setActiveNav('home');
+    }
+
     /* ============ Init ============ */
     bindCardInteractions();
     loadProjects();
+    loadTestimonials();
 });

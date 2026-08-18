@@ -8,13 +8,23 @@ $config = include __DIR__ . '/../config.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle ?? $config['site']['name']) ?></title>
 
-    <meta name="description" content="SEMUT Studio — Portofolio desain 2D & 3D untuk brand, produk, dan kampanye kreatif.">
+    <meta name="description" content="SEMUT Studio — Jasa 3D Modeling, Texturing, Rigging, VRChat Setup, dan GoGoLoco Setup. Hubungi kami untuk proyek kreatifmu.">
     <meta name="author" content="<?= htmlspecialchars($config['site']['name']) ?>">
+    <meta name="keywords" content="3D modeling, texturing, rigging, VRChat avatar, GoGoLoco, jasa 3D, desain 3D, Banjarnegara">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="<?= htmlspecialchars($pageTitle ?? $config['site']['name']) ?>">
-    <meta property="og:description" content="Portofolio desain 2D & 3D untuk brand, produk, dan kampanye kreatif.">
+    <meta property="og:description" content="Jasa 3D Modeling, Texturing, Rigging, VRChat Setup, dan GoGoLoco Setup.">
     <meta property="og:image" content="/assets/images/og/og-default.png">
+    <meta property="og:url" content="https://semutstudio.com/">
+    <meta property="og:site_name" content="SEMUT Studio">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= htmlspecialchars($pageTitle ?? $config['site']['name']) ?>">
+    <meta name="twitter:description" content="Jasa 3D Modeling, Texturing, Rigging, VRChat Setup, dan GoGoLoco Setup.">
+    <meta name="twitter:image" content="/assets/images/og/og-default.png">
+
+    <link rel="canonical" href="https://semutstudio.com/">
 
     <link rel="icon" type="image/png" href="/assets/images/works/cropped-SEMUT-STU-1.png">
 

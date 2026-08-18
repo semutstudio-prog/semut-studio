@@ -1,0 +1,15 @@
+# File ini opsional — upload ke public_html/ untuk keamanan tambahan
+# Melarang akses langsung ke folder src/ jika server tidak pakai mod_rewrite
+
+# Blok akses ke folder src/
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^src(/|$) - [R=404,L]
+</IfModule>
+
+# Kalau tidak ada mod_rewrite, pakai ini:
+<IfModule !mod_rewrite.c>
+    <Location "/src">
+        Require all denied
+    </Location>
+</IfModule>

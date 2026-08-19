@@ -45,5 +45,5 @@ $config = include __DIR__ . '/../config.php';
     </div>
 </footer>
 
-<script src="/assets/js/translations.js?v=2"></script>
-<script src="/assets/js/script.js?v=2"></script>
+<script src="/assets/js/translations.js?v=3"></script>
+<script src="/assets/js/script.js?v=3"></script>

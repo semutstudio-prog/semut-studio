@@ -107,8 +107,8 @@ $testimonials = [
 
 <main>
     <!-- ===================== HERO ===================== -->
-    <section id="home" class="relative min-h-screen flex items-center overflow-hidden">
-        <div class="mx-auto max-w-6xl px-5 pt-28 pb-16 grid gap-12 lg:grid-cols-2 lg:items-center">
+    <section id="home" class="relative min-h-screen flex items-start lg:items-center">
+        <div class="mx-auto max-w-6xl px-5 pt-36 pb-16 grid gap-12 lg:grid-cols-2 lg:items-center">
             <div>
                 <p class="inline-flex items-center gap-2 rounded-full border border-neutral-line bg-neutral-panel px-4 py-1.5 text-xs font-semibold text-neutral-soft shadow-sm reveal">
                     <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
@@ -136,7 +136,7 @@ $testimonials = [
                 </div>
                 <div class="mt-12 grid grid-cols-3 gap-6 max-w-md reveal">
                     <div>
-                        <p class="font-display text-3xl font-bold text-primary">50+</p>
+                        <p class="font-display text-3xl font-bold text-primary">40+</p>
                         <p class="text-xs text-neutral-soft mt-1" data-i18n="hero_stat_projects">Proyek Selesai</p>
                     </div>
                     <div>
@@ -144,7 +144,7 @@ $testimonials = [
                         <p class="text-xs text-neutral-soft mt-1" data-i18n="hero_stat_clients">Klien Puas</p>
                     </div>
                     <div>
-                        <p class="font-display text-3xl font-bold text-primary">4+</p>
+                        <p class="font-display text-3xl font-bold text-primary">1+</p>
                         <p class="text-xs text-neutral-soft mt-1" data-i18n="hero_stat_years">Tahun Berkarya</p>
                     </div>
                 </div>
@@ -296,20 +296,20 @@ $testimonials = [
                 </p>
                 <ul class="mt-8 space-y-4 reveal">
                     <li class="flex items-start gap-3">
-                        <span class="mt-0.5 w-6 h-6 rounded-full bg-primary text-neutral flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        <span class="mt-0.5 w-6 h-6 shrink-0 rounded-full bg-primary text-neutral flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                         </span>
                         <span class="text-base text-accent/80" data-i18n="about_li_1">Proses jelas: brief → konsep → revisi → final</span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <span class="mt-0.5 w-6 h-6 rounded-full bg-primary text-neutral flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        <span class="mt-0.5 w-6 h-6 shrink-0 rounded-full bg-primary text-neutral flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                         </span>
                         <span class="text-base text-accent/80" data-i18n="about_li_2">File siap pakai untuk cetak dan digital</span>
                     </li>
                     <li class="flex items-start gap-3">
-                        <span class="mt-0.5 w-6 h-6 rounded-full bg-primary text-neutral flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        <span class="mt-0.5 w-6 h-6 shrink-0 rounded-full bg-primary text-neutral flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                         </span>
                         <span class="text-base text-accent/80" data-i18n="about_li_3">Komunikasi responsif dari awal sampai selesai</span>
                     </li>

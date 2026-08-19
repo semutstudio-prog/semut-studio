@@ -111,7 +111,7 @@ $config = include __DIR__ . '/../config.php';
         };
     </script>
 
-    <link rel="stylesheet" href="/assets/css/style.css?v=2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=3">
 </head>
 <body class="bg-neutral text-accent font-sans antialiased">
 

@@ -1,5 +1,55 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    /* ============ Bahasa (ID / EN) ============ */
+    var langID = document.getElementById('langID');
+    var langEN = document.getElementById('langEN');
+    var langMarker = document.getElementById('langMarker');
+    var langSwitcher = langMarker ? langMarker.parentElement : null;
+    var currentLang = localStorage.getItem('lang') || 'id';
+
+    function applyLang(lang) {
+        currentLang = lang;
+        localStorage.setItem('lang', lang);
+        document.documentElement.setAttribute('lang', lang === 'id' ? 'id' : 'en');
+
+        if (!window.I18N || !window.I18N[lang]) return;
+        var dict = window.I18N[lang];
+
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+            var key = el.getAttribute('data-i18n');
+            if (dict[key] !== undefined) {
+                el.textContent = dict[key];
+            }
+        });
+
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+            var key = el.getAttribute('data-i18n-placeholder');
+            if (dict[key] !== undefined) {
+                el.placeholder = dict[key];
+            }
+        });
+
+        document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+            var key = el.getAttribute('data-i18n-aria');
+            if (dict[key] !== undefined) {
+                el.setAttribute('aria-label', dict[key]);
+            }
+        });
+
+        if (langID) langID.classList.toggle('active', lang === 'id');
+        if (langEN) langEN.classList.toggle('active', lang === 'en');
+        if (langSwitcher) langSwitcher.setAttribute('data-lang', lang);
+    }
+
+    applyLang(currentLang);
+
+    if (langID) {
+        langID.addEventListener('click', function () { applyLang('id'); });
+    }
+    if (langEN) {
+        langEN.addEventListener('click', function () { applyLang('en'); });
+    }
+
     /* ============ Tema terang/gelap ============ */
     var themeToggle = document.getElementById('themeToggle');
     var rootEl = document.documentElement;
@@ -7,8 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function applyTheme(light) {
         rootEl.classList.toggle('theme-light', light);
         if (themeToggle) {
+            var dict = window.I18N && window.I18N[currentLang] ? window.I18N[currentLang] : {};
             themeToggle.setAttribute('aria-pressed', String(!light));
-            themeToggle.setAttribute('aria-label', light ? 'Aktifkan mode gelap' : 'Aktifkan mode terang');
+            themeToggle.setAttribute('aria-label', light ? (dict.theme_dark || 'Aktifkan mode gelap') : (dict.theme_light || 'Aktifkan mode terang'));
         }
     }
 
@@ -16,8 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
         themeToggle.addEventListener('click', function () {
             var isLight = rootEl.classList.toggle('theme-light');
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            var dict = window.I18N && window.I18N[currentLang] ? window.I18N[currentLang] : {};
             themeToggle.setAttribute('aria-pressed', String(!isLight));
-            themeToggle.setAttribute('aria-label', isLight ? 'Aktifkan mode gelap' : 'Aktifkan mode terang');
+            themeToggle.setAttribute('aria-label', isLight ? (dict.theme_dark || 'Aktifkan mode gelap') : (dict.theme_light || 'Aktifkan mode terang'));
         });
     }
 
@@ -334,12 +386,12 @@ document.addEventListener('DOMContentLoaded', function () {
             var message = document.getElementById('cfMessage').value.trim();
 
             if (!isSupabaseReady) {
-                showFormStatus('Terima kasih! Form belum terhubung ke Supabase — isi kredensial di src/config.php.');
+                showFormStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].form_supabase_warn : 'Terima kasih! Form belum terhubung ke Supabase — isi kredensial di src/config.php.');
                 return;
             }
 
             if (btn) btn.disabled = true;
-            showFormStatus('Mengirim...', false);
+            showFormStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].form_sending : 'Mengirim...', false);
 
             supabaseRequest('/rest/v1/messages', {
                 method: 'POST',
@@ -347,14 +399,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }).then(function (res) {
                 if (btn) btn.disabled = false;
                 if (res.ok) {
-                    showFormStatus('Terima kasih! Pesan berhasil dikirim — kami balas dalam 1×24 jam.');
+                    showFormStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].form_thanks : 'Terima kasih! Pesan berhasil dikirim — kami balas dalam 1×24 jam.');
                     contactForm.reset();
                 } else {
-                    showFormStatus('Gagal mengirim. Coba lagi ya.', true);
+                    showFormStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].form_fail : 'Gagal mengirim. Coba lagi ya.', true);
                 }
             }).catch(function () {
                 if (btn) btn.disabled = false;
-                showFormStatus('Tidak dapat menghubungi server. Periksa koneksi.', true);
+                showFormStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].form_noconnect : 'Tidak dapat menghubungi server. Periksa koneksi.', true);
             });
         });
     }
@@ -367,9 +419,10 @@ document.addEventListener('DOMContentLoaded', function () {
         reviewFormToggle.addEventListener('click', function () {
             var isHidden = reviewFormWrap.classList.toggle('hidden');
             reviewFormToggle.setAttribute('aria-expanded', String(!isHidden));
+            var dict = window.I18N && window.I18N[currentLang] ? window.I18N[currentLang] : {};
             reviewFormToggle.innerHTML = isHidden
-                ? '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg> Tulis Review'
-                : '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg> Tutup';
+                ? '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg> ' + (dict.testi_write || 'Tulis Review')
+                : '<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg> ' + (dict.testi_close || 'Tutup');
             if (!isHidden) {
                 reviewFormWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
@@ -397,16 +450,16 @@ document.addEventListener('DOMContentLoaded', function () {
             var quote = document.getElementById('rfReview').value.trim();
 
             if (!name || !quote) {
-                showReviewStatus('Nama dan review wajib diisi ya.', true);
+                showReviewStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].review_fail_empty : 'Nama dan review wajib diisi ya.', true);
                 return;
             }
             if (!isSupabaseReady) {
-                showReviewStatus('Form belum terhubung ke Supabase — isi kredensial di src/config.php.', true);
+                showReviewStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].review_supabase_warn : 'Form belum terhubung ke Supabase — isi kredensial di src/config.php.', true);
                 return;
             }
 
             if (btn) btn.disabled = true;
-            showReviewStatus('Mengirim...', false);
+            showReviewStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].review_sending : 'Mengirim...', false);
 
             supabaseRequest('/rest/v1/testimonials', {
                 method: 'POST',
@@ -414,17 +467,18 @@ document.addEventListener('DOMContentLoaded', function () {
             }).then(function (res) {
                 if (btn) btn.disabled = false;
                 if (res.ok) {
-                    showReviewStatus('Terima kasih! Review kamu menunggu persetujuan admin.', false);
+                    showReviewStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].review_thanks : 'Terima kasih! Review kamu menunggu persetujuan admin.', false);
                     reviewForm.reset();
                 } else {
                     return res.text().then(function (body) {
                         console.error('Supabase testimonial error', res.status, body);
-                        showReviewStatus('Gagal mengirim (HTTP ' + res.status + '). Cek console browser.', true);
+                        var msg = window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].review_fail_http : 'Gagal mengirim (HTTP ' + res.status + '). Cek console browser.';
+                        showReviewStatus(msg.replace('{status}', res.status), true);
                     });
                 }
             }).catch(function () {
                 if (btn) btn.disabled = false;
-                showReviewStatus('Tidak dapat menghubungi server. Periksa koneksi.', true);
+                showReviewStatus(window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].form_noconnect : 'Tidak dapat menghubungi server. Periksa koneksi.', true);
             });
         });
     }
@@ -454,7 +508,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 '        <p class="font-semibold text-accent text-base">' + name + '</p>' +
                 '        <p class="text-xs text-neutral-soft mt-0.5">' + role + '</p>' +
                 '      </div>' +
-                '      <span class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:gap-3 transition-all">Baca review lengkap' +
+                '      <span class="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:gap-3 transition-all">' + (window.I18N && window.I18N[currentLang] ? window.I18N[currentLang].testi_readmore : 'Baca review lengkap') +
                 '        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/></svg>' +
                 '      </span>' +
                 '    </div>' +

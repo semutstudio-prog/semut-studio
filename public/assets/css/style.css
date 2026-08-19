@@ -347,3 +347,68 @@ section[id] { scroll-margin-top: 5rem; }
 .back-to-top:hover {
     background: var(--c-secondary);
 }
+
+/* ============ I18N: prevent layout shift ============ */
+
+/* Hero title: fluid font size, semua baris muat tanpa wrap */
+.hero-title {
+    font-size: clamp(2rem, 2rem + 1.2vw, 3.75rem);
+    min-height: 3.3em;
+}
+.hero-title > span {
+    white-space: nowrap;
+    display: block;
+}
+
+/* Hero deskripsi: paksa 2 baris di semua ukuran */
+[data-i18n="hero_desc"] {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 3.2em;
+}
+
+/* Nav link: stabil width antar bahasa */
+#navMenu .nav-link,
+#mobileMenu .nav-link {
+    white-space: nowrap;
+}
+
+#services .grid > div {
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+}
+#services .grid > div p[data-i18n] {
+    flex: 1;
+}
+
+[data-i18n="contact_desc"] {
+    min-height: 3em;
+}
+
+[data-i18n="about_desc"] {
+    min-height: 5.5em;
+}
+
+section h2 {
+    min-height: 1.3em;
+}
+
+/* ============ Language Switcher ============ */
+.lang-btn {
+    color: var(--c-soft);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.lang-btn:hover {
+    color: var(--c-accent);
+}
+.lang-btn.active {
+    color: #fff;
+}
+.lang-switcher[data-lang="en"] #langMarker {
+    transform: translateX(calc(100% + 2px));
+}

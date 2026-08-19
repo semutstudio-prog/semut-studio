@@ -95,6 +95,11 @@ $config = include __DIR__ . '/../config.php';
             if (t === 'light') {
                 document.documentElement.classList.add('theme-light');
             }
+
+            var lang = localStorage.getItem('lang');
+            if (lang === 'en') {
+                document.documentElement.setAttribute('lang', 'en');
+            }
         })();
     </script>
 
@@ -106,11 +111,11 @@ $config = include __DIR__ . '/../config.php';
         };
     </script>
 
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=2">
 </head>
 <body class="bg-neutral text-accent font-sans antialiased">
 
-<a href="#home" class="sr-only focus:not-sr-only">Langsung ke konten</a>
+<a href="#home" class="sr-only focus:not-sr-only" data-i18n="skip_to_content">Langsung ke konten</a>
 
 <header class="fixed top-0 inset-x-0 z-50 border-b border-neutral-line bg-neutral/85 backdrop-blur-md">
     <nav class="mx-auto max-w-6xl px-5 h-16 flex items-center justify-between">
@@ -131,14 +136,20 @@ $config = include __DIR__ . '/../config.php';
         </button>
 
         <ul id="navMenu" class="hidden lg:flex items-center gap-8 text-sm font-medium">
-            <li><a href="#home" class="nav-link hover:text-primary transition">Home</a></li>
-            <li><a href="#services" class="nav-link hover:text-primary transition">Layanan</a></li>
-            <li><a href="#portfolio" class="nav-link hover:text-primary transition">Portofolio</a></li>
-            <li><a href="#about" class="nav-link hover:text-primary transition">Tentang</a></li>
-            <li><a href="#contact" class="nav-link hover:text-primary transition">Kontak</a></li>
+            <li><a href="#home" class="nav-link hover:text-primary transition" data-i18n="nav_home">Home</a></li>
+            <li><a href="#services" class="nav-link hover:text-primary transition" data-i18n="nav_services">Layanan</a></li>
+            <li><a href="#portfolio" class="nav-link hover:text-primary transition" data-i18n="nav_portfolio">Portofolio</a></li>
+            <li><a href="#about" class="nav-link hover:text-primary transition" data-i18n="nav_about">Tentang</a></li>
+            <li><a href="#contact" class="nav-link hover:text-primary transition" data-i18n="nav_contact">Kontak</a></li>
         </ul>
 
         <div class="flex items-center gap-3">
+            <div class="lang-switcher relative flex items-center rounded-full border border-neutral-line bg-neutral-panel p-0.5">
+                <div id="langMarker" class="absolute top-0.5 left-0.5 h-[calc(100%-4px)] w-[calc(50%-2px)] rounded-full bg-primary transition-transform duration-300"></div>
+                <button id="langID" type="button" class="lang-btn relative z-10 px-3 py-1 text-xs font-semibold transition" data-lang="id">ID</button>
+                <button id="langEN" type="button" class="lang-btn relative z-10 px-3 py-1 text-xs font-semibold transition" data-lang="en">EN</button>
+            </div>
+
             <button id="themeToggle" type="button" class="theme-toggle" aria-label="Aktifkan mode terang" aria-pressed="true">
                 <span class="theme-toggle-track" aria-hidden="true"></span>
                 <span class="theme-toggle-knob" aria-hidden="true">
@@ -151,7 +162,7 @@ $config = include __DIR__ . '/../config.php';
                 </span>
             </button>
 
-            <a href="#contact" class="hidden lg:inline-flex items-center gap-2 rounded-full bg-primary hover:bg-secondary text-neutral text-sm font-semibold px-5 py-2 transition">
+            <a href="#contact" class="hidden lg:inline-flex items-center gap-2 rounded-full bg-primary hover:bg-secondary text-neutral text-sm font-semibold px-5 py-2 transition" data-i18n="nav_start">
                 Mulai Proyek
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/>
@@ -161,10 +172,10 @@ $config = include __DIR__ . '/../config.php';
     </nav>
 
     <ul id="mobileMenu" class="lg:hidden hidden border-t border-neutral-line bg-neutral/95 px-5 py-4 space-y-3 text-sm font-medium">
-        <li><a href="#home" class="nav-link block py-2 hover:text-primary">Home</a></li>
-        <li><a href="#services" class="nav-link block py-2 hover:text-primary">Layanan</a></li>
-        <li><a href="#portfolio" class="nav-link block py-2 hover:text-primary">Portofolio</a></li>
-        <li><a href="#about" class="nav-link block py-2 hover:text-primary">Tentang</a></li>
-        <li><a href="#contact" class="nav-link block py-2 hover:text-primary">Kontak</a></li>
+        <li><a href="#home" class="nav-link block py-2 hover:text-primary" data-i18n="nav_home">Home</a></li>
+        <li><a href="#services" class="nav-link block py-2 hover:text-primary" data-i18n="nav_services">Layanan</a></li>
+        <li><a href="#portfolio" class="nav-link block py-2 hover:text-primary" data-i18n="nav_portfolio">Portofolio</a></li>
+        <li><a href="#about" class="nav-link block py-2 hover:text-primary" data-i18n="nav_about">Tentang</a></li>
+        <li><a href="#contact" class="nav-link block py-2 hover:text-primary" data-i18n="nav_contact">Kontak</a></li>
     </ul>
 </header>
